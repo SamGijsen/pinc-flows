@@ -67,7 +67,7 @@ fold_to_holdout_mapping.yaml
 
 ## H5 Dataset Schema
 
-For the retained dynamics train/eval path, each H5 file must contain:
+For the dynamics model train/eval path, each H5 file must contain:
 
 ```text
 long_subject_id                         [N]
