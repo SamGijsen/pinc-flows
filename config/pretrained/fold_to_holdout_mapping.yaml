@@ -1,0 +1,96 @@
+folds:
+  0:
+    checkpoint: pinc-flows_fold0_epoch0999.pt
+    config: pinc-flows_fold0_epoch0999.yaml
+    hcp:
+    - EMOTION
+    ibc:
+    - Discount
+    - ColumbiaCards
+    - TheoryOfMind
+    - ArchiSocial
+    - ArchiSpatial
+    - MVEB
+    - PreferencePaintings
+  1:
+    checkpoint: pinc-flows_fold1_epoch0999.pt
+    config: pinc-flows_fold1_epoch0999.yaml
+    hcp:
+    - GAMBLING
+    ibc:
+    - RSVPLanguage
+    - Lec1
+    - DotPatterns
+    - Checkerboard
+    - EmoMem
+    - FingerTap
+    - EmoReco
+    - BiologicalMotion1
+  2:
+    checkpoint: pinc-flows_fold2_epoch0999.pt
+    config: pinc-flows_fold2_epoch0999.yaml
+    hcp:
+    - LANGUAGE
+    ibc:
+    - Self
+    - MCSE
+    - ArchiEmotional
+    - StopSignal
+    - MTTNS
+    - WardAndAllport
+    - EmotionalPain
+    - MVIS
+  3:
+    checkpoint: pinc-flows_fold3_epoch0999.pt
+    config: pinc-flows_fold3_epoch0999.yaml
+    hcp:
+    - MOTOR
+    ibc:
+    - PainMovie
+    - Enumeration
+    - BreathHolding
+    - PreferenceHouses
+    - Moto
+    - Stroop
+    - Motion
+    - VSTMC
+  4:
+    checkpoint: pinc-flows_fold4_epoch0999.pt
+    config: pinc-flows_fold4_epoch0999.yaml
+    hcp:
+    - RELATIONAL
+    ibc:
+    - ArchiStandard
+    - FingerTapping
+    - Visu
+    - Attention
+    - MathLanguage
+    - Catell
+    - SelectiveStopSignal
+    - ItemRecognition
+  5:
+    checkpoint: pinc-flows_fold5_epoch0999.pt
+    config: pinc-flows_fold5_epoch0999.yaml
+    hcp:
+    - SOCIAL
+    ibc:
+    - Audi
+    - PreferenceFaces
+    - VisualSearch
+    - StopNogo
+    - Audio
+    - TwoByTwo
+    - BiologicalMotion2
+  6:
+    checkpoint: pinc-flows_fold6_epoch0999.pt
+    config: pinc-flows_fold6_epoch0999.yaml
+    hcp:
+    - WM
+    ibc:
+    - RewProc
+    - MTTWE
+    - VSTM
+    - Color
+    - PreferenceFood
+    - SpatialNavigation
+    - NARPS

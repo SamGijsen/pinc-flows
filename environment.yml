@@ -1,0 +1,16 @@
+name: pinc-flows
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu124
+      - torch==2.6.0+cu124
+      - numpy==2.3.5
+      - h5py==3.16.0
+      - PyYAML==6.0.3
+      - pandas==3.0.2
+      - scipy==1.17.1
+      - scikit-learn==1.8.0
+      - matplotlib==3.10.8

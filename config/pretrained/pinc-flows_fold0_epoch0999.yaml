@@ -1,0 +1,169 @@
+batch_size: 256
+data:
+  atlas_names:
+  - schaefer400
+  condition_mode: cont
+  input_stride: 1
+  num_rois: 400
+  sample_mode: random_safe
+  sequence_stride: 1
+  subject_min_gap: 32
+  train_condition_cont_language_events:
+    h5_version: v2
+    variant_sampling: random
+  train_datasets:
+  - dir_path: /TODO_SET_PATH/hcp
+    subject_ids_path: /TODO_SET_PATH/hcp_all_minus_100test.npy
+    weight: 1.0
+  - dir_path: /TODO_SET_PATH/nakai
+    weight: 0.15
+  - dir_path: /TODO_SET_PATH/ibc
+    weight: 0.85
+  - path: /TODO_SET_PATH/ukbb_1hz_braincontrol_rest.h5
+    weight: 0.2
+  train_p_splice: 0.1
+  val_condition_cont_language_events:
+    fixed_variant_idx: 0
+    h5_version: v2
+    variant_sampling: fixed
+  val_datasets:
+  - name: hcp
+    path: /TODO_SET_PATH/HCP_YA_EMOTION_lp0.25_tr1.00_zscore_20260402.h5
+  - name: ibc
+    path: /TODO_SET_PATH/Discount.h5
+  - name: ibc
+    path: /TODO_SET_PATH/ColumbiaCards.h5
+  - name: ibc
+    path: /TODO_SET_PATH/TheoryOfMind.h5
+  - name: ibc
+    path: /TODO_SET_PATH/ArchiSocial.h5
+  - name: ibc
+    path: /TODO_SET_PATH/ArchiSpatial.h5
+  - name: ibc
+    path: /TODO_SET_PATH/MVEB.h5
+  - name: ibc
+    path: /TODO_SET_PATH/PreferencePaintings.h5
+dynamics:
+  add_term_latent_embeddings: null
+  ar_training_denoise_steps: 1
+  ar_training_steps: 0
+  condition_cont_dim: 3074
+  condition_cont_use_projection: true
+  context_frames: 8
+  context_sigma: 1.0
+  d_model: 1024
+  dropout: 0.05
+  generation_frames: 16
+  global_condition_enabled: false
+  latent_dim: 200
+  max_context_length: 24
+  mlp_ratio: 4.0
+  num_base_layers: 0
+  num_conditions: 1
+  num_heads: 16
+  num_latents: 2
+  num_layers: 12
+  p_drop_condition_context: 0.15
+  p_drop_condition_future: 0.1
+  p_drop_context: 0.2
+  p_drop_global_condition: 0.0
+  p_drop_instruct: 0.1
+  p_drop_relevance: 0.5
+  p_drop_response: 0.1
+  p_drop_sensory: 0.1
+  parallel_generation: true
+  parallel_shared_sigma: true
+  prediction_type: x
+  ramp_loss_weight: false
+  relevance:
+    mode: fixed
+    h5_group: relevance_v2/schaefer400
+  roi_encoder:
+    emb_dim: 1024
+    mode: hemispheric
+  soft_cap: null
+  subject_allow_missing_token: true
+  subject_context_length: 32
+  subject_encoder_layers: 2
+  subject_token_enabled: false
+evaluation:
+  hcp:
+    batch_size: 256
+    context_guidance_scale: 1.0
+    enabled: true
+    glm_guidance_grid:
+      kind: disabled
+    glm_phrase_variants:
+      indices:
+      - 0
+      - 1
+      kind: fixed_indices
+    guidance_scale: 1.0
+    holdout_subject_ids_path: /TODO_SET_PATH/hcp_100test.npy
+    num_steps: 64
+    out_subdir: hcp_eval
+    relevance_input:
+      default: mask
+      grid:
+      - true_roi
+      - ood_roi
+      ood_roi_h5_group: relevance_ood_7fold_roi/schaefer400
+    rollout_counts:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    run_at: final
+    run_ibc_glm: true
+    subject_id:
+      batch_size: 256
+      enabled: true
+      lr: 0.001
+      seeds:
+      - 0
+      - 1
+      - 2
+      train_steps: 1000
+    tasks:
+    - EMOTION
+  input_stride: 1
+  motor_inference: false
+  probe_at_epochs: []
+  reconstruction:
+    enabled: true
+    num_decode_steps: 1
+    num_gen_steps:
+    - 1
+    - 4
+    - 16
+    - 32
+  val_loss_interval: 20
+  val_loss_max_batches: 10
+gradient_accumulation_steps: 1
+log_every: 500
+num_epochs: 1000
+num_workers: 4
+optimizer:
+  betas:
+  - 0.9
+  - 0.999
+  cosine_epochs: 500
+  lr: 0.00024
+  lr_schedule: cosine_constant
+  min_lr_ratio: 0.3
+  warmup_epochs: 10
+  weight_decay: 0.05
+output_dir: /TODO_SET_PATH/out
+resume_checkpoint: null
+run_name: pinc-flows_fold0
+save_every: 250
+steps_per_epoch: 100
+tokenizer:
+  input_timesteps: 1
+  num_rois: 400
+use_amp: true
+weights_only_checkpoint: /TODO_SET_PATH/pinc-flows_fold0_epoch0999.pt
