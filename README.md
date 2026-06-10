@@ -1,5 +1,6 @@
 # Flow Matching with In-Context Priors for Out-of-Distribution Brain Dynamics
 
+https://github.com/user-attachments/assets/81f7e298-7dee-45e2-817a-4168bf3ad13b
 
 The main workflow is:
 
