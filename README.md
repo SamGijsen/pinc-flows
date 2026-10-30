@@ -1,13 +1,16 @@
-# Flow Matching with In-Context Priors for Out-of-Distribution Brain Dynamics
+# [NeurIPS 2026] Flow Matching with In-Context Priors for Out-of-Distribution Brain Dynamics
 
 https://github.com/user-attachments/assets/81f7e298-7dee-45e2-817a-4168bf3ad13b
+
+Paper: https://arxiv.org/abs/2606.11833
 
 [I'll be adding a small, clearer tutorial soon!]
 
 The main workflow is:
 
 1. Create the environment below.
-2. Prepare H5 files with the schema below.
+2. Prepare H5 files with the schema below, then add the caption
+   embeddings with `util/add_captions_to_h5.py` (see [Captions](#captions)).
 3. Copy a dynamics config and set local data/output paths.
 4. Train with `train_dynamics.py`, or evaluate a pretrained checkpoint with
    `eval.hcp.run_hcp_eval`.
@@ -87,6 +90,35 @@ conditioning with `condition_cont_dim=3074`: instruction 1024, sensory 1024,
 response 1024, plus `responses/no_response` and `responses/response_unknown`.
 Those two response timecourses are required but do not need embedding rows.
 
+## Captions
+
+The text captions and their embeddings can be found (together with the checkpoints) on HuggingFace, in `captions/`:
+
+- `captions.h5`: one group per task, named `<dataset>/<task>`: HCP and IBC
+  tasks as in `fold_to_holdout_mapping.yaml` (e.g. `hcp/EMOTION`,
+  `ibc/Discount`); all Nakai files use `nakai/all`. Each group holds the
+  `embeddings/...` datasets required by the schema above, plus the caption
+  text (`events_desc/<event>/{sensory,instruction}`,
+  `events_desc_long/<event>`, `response_desc/<response>`).
+- `captions.csv`: the same captions as a flat table
+  (`dataset, task, kind, name, variant_idx, text`).
+
+Each event and response has several phrasings (`V` rows). During training, we sample a phrase at random, while evaluation by default uses `variant_idx` 0. The `BAAI/bge-large-en-v1.5` model was used for embedding.
+
+To add them to your H5 files:
+
+```bash
+hf download SamGijsen/pinc-flows captions/captions.h5 --local-dir .
+python util/add_captions_to_h5.py --captions captions/captions.h5 --task ibc/Discount --h5 /path/to/Discount.h5
+# all IBC files at once (file names equal task names):
+for f in /path/to/ibc/*.h5; do python util/add_captions_to_h5.py --captions captions/captions.h5 --task ibc/$(basename $f .h5) --h5 $f; done
+```
+
+The script fails if any `events/<name>` or `responses/<name>` in your file
+has no caption. For the resting-state (UKBB) file, use `util/add_h5_fields_to_rest.py` instead (`rest` event
+has an all-zero embedding). For other datasets, write captions in the same
+format and embed them with the same model.
+
 ## Train
 
 Copy a config, edit paths locally, then run:
@@ -131,3 +163,4 @@ This repository does not redistribute HCP, IBC, or derived H5 data files.
 Users must obtain the source datasets according to their licenses and construct
 H5 files matching the schema above.
 
+Captions and caption embeddings for the datasets we trained on (HCP, IBC, Nakai) are released with the checkpoints (see [Captions](#captions)).
