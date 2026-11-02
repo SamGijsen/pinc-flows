@@ -9,8 +9,9 @@ Paper: https://arxiv.org/abs/2606.11833
 The main workflow is:
 
 1. Create the environment below.
-2. Prepare H5 files with the schema below, then add the caption
-   embeddings with `util/add_captions_to_h5.py` (see [Captions](#captions)).
+2. Prepare H5 files with the schema below. For HCP, build the event and
+   response timecourses with `util/hcp_events.py` (see [Events](#events)), then
+   add the caption embeddings with `util/add_captions_to_h5.py` (see [Captions](#captions)).
 3. Copy a dynamics config and set local data/output paths.
 4. Train with `train_dynamics.py`, or evaluate a pretrained checkpoint with
    `eval.hcp.run_hcp_eval`.
@@ -89,6 +90,25 @@ Our configs use `atlas=schaefer400`, `R=400`, and language-event
 conditioning with `condition_cont_dim=3074`: instruction 1024, sensory 1024,
 response 1024, plus `responses/no_response` and `responses/response_unknown`.
 Those two response timecourses are required but do not need embedding rows.
+
+## Events
+
+`events/<event_name>` and `responses/<response_name>` are timecourses on a 1 s
+grid: each value is the fraction of that second occupied by the event (0–1),
+padded with NaN after `valid_timepoints`. Button presses are split across the
+two seconds around the press time. `responses/no_response` is 1 minus the sum
+of the response channels, and `responses/response_unknown` is all zeros for HCP.
+Event and response names must match the captions (e.g. `question_mark`,
+`loss_feedback`, `response_1`).
+
+For HCP, `util/hcp_events.py` builds them from the EV files, movement
+regressors and E-Prime TAB files (from the unprocessed task packages) and
+writes them into an H5 that already has `long_subject_id` (e.g. `100206_LR`)
+and `valid_timepoints`:
+
+```bash
+python util/hcp_events.py --hcp-root /path/to/HCP_1200 --task GAMBLING --h5 /path/to/gambling.h5
+```
 
 ## Captions
 
